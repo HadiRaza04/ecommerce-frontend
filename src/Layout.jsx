@@ -6,7 +6,7 @@ const Layout = () => {
     <>
       <Navbar />
       <main>
-        <Outlet /> {/* This is where your page content will render */}
+        <Outlet />
       </main>
     </>
   );

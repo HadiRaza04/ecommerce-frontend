@@ -8,6 +8,7 @@ import GoogleLoginButton from './GoogleLoginButton';
 import { useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
 import { useContext } from 'react';
+import baseURL from '../constraints';
 
 const Signup = () => {
   const { isLogin, setIsLogin } = useContext(CartContext);
@@ -29,7 +30,7 @@ const Signup = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:3000/signup', formData);
+      const response = await axios.post(`${baseURL}/signup`, formData);
       console.log(response.data);
       
       

@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { CartContext } from "../context/CartContext.jsx";
 import axios from "axios";
 import ProductCarousel from "./ProductImagesCarousel.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import ProductNotFound from "./ProductNotFound.jsx";
-
+import baseURL from "../constraints.js";
 
 const SingleProduct = () => {
   const notify = (msg) => toast(msg);
@@ -19,7 +19,7 @@ const SingleProduct = () => {
     const fetchProduct = async () => {
         const token = localStorage.getItem('token');
       try {
-         const res = await axios.get(`http://localhost:3000/products/${id}`, {
+         const res = await axios.get(`${baseURL}/products/${id}`, {
           headers: {
             // 2. Attach the token as a Bearer token
             Authorization: `Bearer ${token}` 
@@ -55,7 +55,7 @@ const SingleProduct = () => {
       <ProductNotFound />
     );
   }
-  // const images = product.image.map((img, index) => (<img key={index} src={`http://localhost:3000${img}`} alt={product.name} />));
+  // const images = product.image.map((img, index) => (<img key={index} src={`${baseURL}${img}`} alt={product.name} />));
 //   const addToCart = (item, index) => {
 //         cart.setItems([{title: item.name, price: item.price, id: item.id}, ...cart.items])
 //         alert("Item added to cart.")
@@ -63,14 +63,18 @@ const SingleProduct = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      
       <ToastContainer />
       <div className="max-w-5xl mx-auto p-6">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white shadow-lg rounded-xl p-6">
+    
+        
+  
 
     {/* LEFT: Product Image */}
     {/* <div className="flex justify-center items-center bg-gray-100 rounded-xl p-6">
       <img
-        src={`http://localhost:3000${product.image[0]}`}
+        src={`${baseURL}${product.image[0]}`}
         alt={product.name}
         className="
           w-full
@@ -86,7 +90,9 @@ const SingleProduct = () => {
       />
     </div> */}
     {/* {images} */}
-    <ProductCarousel product={product} />
+    
+      <ProductCarousel product={product} />
+   
 
     {/* RIGHT: Product Details */}
     <div className="flex flex-col justify-center">
@@ -105,7 +111,6 @@ const SingleProduct = () => {
       <button
         onClick={() => {addToCart(product); notify("Item added to cart!");}}
         className="
-          w-fit
           bg-black
           text-white
           px-6

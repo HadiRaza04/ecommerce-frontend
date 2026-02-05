@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import baseURL from '../constraints';
 
 const Login = () => {
   const { isLogin, setIsLogin } = useContext(CartContext);
@@ -34,7 +35,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', formData);
+      const response = await axios.post(`${baseURL}/login`, formData);
       // console.log('Form Submitted:', formData);
       
       setStatus({

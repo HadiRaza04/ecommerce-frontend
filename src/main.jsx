@@ -7,7 +7,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CartProvider } from './context/CartContext.jsx';
 
 const clientid = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-// const clientid = process.env.GOOGLE_CLIENT_ID;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

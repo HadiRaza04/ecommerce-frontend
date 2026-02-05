@@ -6,7 +6,7 @@ import { MdFavorite, MdHelp } from 'react-icons/md'
 import { FaWallet, FaUserFriends } from 'react-icons/fa'
 import { MdLogout } from "react-icons/md";
 import Cart from './Cart'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 
@@ -14,6 +14,7 @@ function Navbar() {
     const [nav, setNav] = useState(false);
     const [cart, setCart] = useState(false);
     const { isLogin, setIsLogin } = useContext(CartContext);
+
   return (
     <div className='    max-w-[1640px] mx-auto flex justify-between items-center p-4 sticky top-0 z-[1] bg-white shadow-md'>
         {/* Left Side */}
@@ -55,15 +56,19 @@ function Navbar() {
             <h2 className='text-2xl p-4'>Shopping <span className='font-bold'>Center</span></h2>
             <nav>
                 <ul className='flex flex-col p-4 text-gray-800'>
-                    {/* <li className='text-xl py-4 flex'><TbTruckDelivery size={ 25 } className='mr-4'/> Orders</li>
-                    <li className='text-xl py-4 flex'><MdFavorite  size={ 25 } className='mr-4'/> Favorite</li>
+                    <li className='text-xl py-4 flex'><TbTruckDelivery size={ 25 } className='mr-4'/> Orders</li>
+                    <li className='text-xl py-4 flex'>
+                        
+                        <MdFavorite  size={ 25 } className='mr-4'/> 
+                        Favorite
+                    </li>
                     <li className='text-xl py-4 flex'><MdHelp size={ 25 } className='mr-4'/> Help</li>
                     <li className='text-xl py-4 flex'><AiFillTag size={ 25 } className='mr-4'/> Promotions</li>
                     <li className='text-xl py-4 flex'><BsFillSaveFill size={ 25 } className='mr-4'/> Best Ones</li>
                     <li className='text-xl py-4 flex'><FaUserFriends size={ 25 } className='mr-4'/> Invite Friends</li>
                     <li className='text-xl py-4 flex'><FaWallet size={ 25 } className='mr-4'/>
                      Wallet
-                    </li> */}
+                    </li>
                     <li className='text-xl py-4 flex cursor-pointer' onClick={() => {
                         setCart(!cart)
                         setNav(!nav)
@@ -73,14 +78,15 @@ function Navbar() {
                         {/* </button> */}
                     </li>
                     <li className='text-xl py-4 flex cursor-pointer' onClick={() => {
-                        // setCart(!cart)
+                        setCart(!cart)
                         setIsLogin(false);
                         localStorage.removeItem('token');
+                        localStorage.removeItem('user');
                         setNav(!nav);
                     }}>
                         {/* <button className='bg-black text-white hidden md:flex items-center rounded-full' onClick={() => setCart(!cart)}> */}
                             <MdLogout size={ 20 }  className='mr-4'/> Logout
-                        {/* </button> */}
+                       
                     </li>
                 </ul>
             </nav>

@@ -2,54 +2,57 @@ import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext.jsx';
 import './products.css'
 import { AiOutlineClose } from 'react-icons/ai';
+import {loadStripe} from '@stripe/stripe-js';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import baseURL from '../constraints.js';
 
 const Cart = () => {
   const { items, setItems } = useContext(CartContext);
-const total = items.reduce((sum, item) => sum + item.price, 0);
-//   const removeFromCart = (e, id) => {
-//     const updatedCart = items.filter(item => item._id !== id);
-//     setItems(updatedCart);
-//     e.stopPropagation()
-//   };
+  const notify = (msg) => toast(msg);
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+
   const removeFromCart = (id, e) => {
         e.stopPropagation()
         setItems((prev) => prev.filter(item => item._id !== id));
     };
-//   const cartItems = cart.items.map((item, index) => {
-//     return (
-//       <div className='w-[80%] h-[120px] m-2 p-2 bg-gray-300 rounded-lg flex flex-col' key={index}>
-//         <div>
-//           <h1 className='text-md'>{item.title}</h1>
-//         </div>
-//         <div className='flex flex-row items-center justify-between m-2'>
-//           <p className='font-bold'>Rs: {item.price}</p>
-//           <button type='button' className='w-[90px] h-[40px] m-2 text-white hover:bg-orange-700 p-2 rounded-md border-none bg-orange-600' onClick={(e) => removeFromCart(e, item.id)}>Remove</button>
-//         </div>
-//       </div>
-//     )
-//   })
-//   return (
-    // <div className='md:w-[70%] w-[80%] mt-12 m-auto  relative lg:mt-12 bg-white rounded-md p-2 border-2 flex flex-col '>
-    //     <h1 className='text-4xl '>
-    //       Cart
-    //     </h1>
-    //     {/* onClick={() => setNav(!nav)}  */}
-    //     <AiOutlineClose size={ 30 } className='absolute top-4 right-4 cursor-pointer'/>
-    //     <div className='overflow-scroll xyz h-[300px] flex flex-col items-center pt-4'>
-    //         {cartItems}
-    //     </div>
-    //     <div className=' bottom-2 w-[90%]  p-3'>
-    //       <div className='w-[100%] h-[5px] '>
-    //         {/* line */}
-    //       </div>
-    //       <h1 className='text-2xl mt-4  font-bold'>Total {total} Rupees </h1>
-    //     </div>
-    // </div>
-//   )
+
+const makePayment = async (e) => {
+  e.stopPropagation();
+  if (items.length === 0) return notify("Your cart is empty!");
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login to proceed with checkout");
+      return;
+    }
+    const response = await axios.post(`${baseURL}/checkout`,
+      {
+        cartItems: items,
+      },
+      { 
+          headers: { 
+            'Authorization': `Bearer ${token}`
+          } 
+      }
+    );
+    const session = response.data;
+
+    if (session.url) {
+      window.location.href = session.url; 
+    } else {
+      console.error("Session URL not found");
+    }
+
+  } catch (error) {
+    console.error("Checkout Error:", error);
+  }
+};
 
 return (
     <div className="md:w-[70%] w-[80%] mt-12 m-auto relative bg-white rounded-md p-4 border-2 flex flex-col">
-      
+      <ToastContainer />
       <h1 className="text-4xl mb-4">Cart</h1>
       <AiOutlineClose size={30} className="absolute top-4 right-4 cursor-pointer" />
 
@@ -77,6 +80,22 @@ return (
           </div>
         ))}
       </div>
+
+      <button
+        onClick={(e) => makePayment(e)}
+        className="
+          bg-black
+          text-white
+          px-6
+          py-3
+          rounded-lg
+          hover:bg-gray-800
+          transition
+          cursor-pointer
+        "
+      >
+        Proceed to checkout 🛒
+      </button>
 
       <h1 className="text-2xl font-bold mt-4">
         Total: Rs {total}

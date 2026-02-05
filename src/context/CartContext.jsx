@@ -1,10 +1,9 @@
 import React, { createContext, useState } from "react";
-
 export const CartContext = createContext(null);
 
 export const CartProvider = (props) => {
     const [items, setItems] = useState([]);
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
     const addToCart = (product) => {
         console.log("Added to cart:", product);
     setItems((prev) => [...prev, product]);
