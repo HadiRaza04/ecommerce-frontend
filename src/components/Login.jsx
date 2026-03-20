@@ -6,12 +6,18 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 import baseURL from '../constraints';
+import { FaEye, FaEyeSlash  } from "react-icons/fa";
+
 
 const Login = () => {
   const { isLogin, setIsLogin } = useContext(CartContext);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  function passwordVisible() {
+    setIsPasswordVisible(!isPasswordVisible);
+  }
 
-     const notify = (msg) => toast(msg);
-    const navigate = useNavigate();
+  const notify = (msg) => toast(msg);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -100,17 +106,20 @@ const Login = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              required
-            />
+          <div className="flex justify-center mx-0">
+            <div className='w-[90%]'>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                required
+              />
+            </div>
+            {isPasswordVisible ? <FaEye className='my-[34px] cursor-pointer w-[10%]' onClick={passwordVisible} /> : <FaEyeSlash  className='my-[34px] cursor-pointer w-[10%]' onClick={passwordVisible}  />}
           </div>
 
           <button
