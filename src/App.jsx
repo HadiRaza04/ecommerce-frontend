@@ -8,9 +8,12 @@ import SingleProduct from './components/SingleProduct';
 import Layout from './Layout';
 import { useContext } from 'react';
 import { CartContext } from './context/CartContext';
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
 import Favourite from './components/Favourite';
+import FavoritesPage from './components/Favorite';
+import Orders from './components/Orders';
+import Wallet from './components/Wallet';
 
 function App() {
   const { isLogin } = useContext(CartContext);
@@ -31,7 +34,10 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<SingleProduct />} />
-            <Route path="/favourite" element={<Favourite />} />
+            {/* <Route path="/favourite" element={<Favourite />} /> */}
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/wallet" element={<Wallet />} />
             <Route path="/" element={<Navigate to="/products" replace={true} />} />
             <Route path="*" element={<Navigate to="/products" replace={true} />} />
           </Route>
